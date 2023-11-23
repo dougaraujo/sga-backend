@@ -11,9 +11,9 @@ datasource db {
 }
 
 model Supplier {
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   supplier_name    String
   supplier_address String?
@@ -26,7 +26,7 @@ model Supplier {
 model Crop {
   id        Int       @id @default(autoincrement())
   crop_name String
-  harvests   Harvest[]
+  harvests  Harvest[]
 
   @@map("crops")
 }
@@ -40,73 +40,111 @@ model Harvest {
   crop_id      Int
   crop         Crop   @relation(fields: [crop_id], references: [id])
   farm_id      Int
-  farms        Farm[]   @relation("Harvests")
+  farms        Farm[] @relation("Harvests")
 
   @@map("harvests")
 }
 
 model Farm {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  farm_name  String
-  farm_area  Float
-  farm_location String
+  farm_name      String
+  farm_area      Float
+  farm_location  String
   farm_soil_type String
 
-  harvests   Harvest[] @relation("Harvests")
-  activities Activity[]
-  occurrences Occurrence[] 
+  harvests    Harvest[]    @relation("Harvests")
+  activities  Activity[]
+  occurrences Occurrence[]
 
   @@map("farms")
 }
 
 model Activity {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   title       String
   description String
-  status      String    @default("active")
+  status      String @default("active")
 
-  farm_id     Int
-  farm        Farm      @relation(fields: [farm_id], references: [id])
+  farm_id Int
+  farm    Farm @relation(fields: [farm_id], references: [id])
 
   @@map("activities")
 }
 
 model Occurrence {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   title       String
   description String
-  status      String    @default("active")
+  status      String @default("active")
   impact      String
 
-  farm_id     Int
-  farm       Farm      @relation(fields: [farm_id], references: [id])
+  farm_id Int
+  farm    Farm @relation(fields: [farm_id], references: [id])
 
   @@map("occurrences")
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
-  email       String    @unique
-  password    String
-  first_name  String?
-  last_name   String?
-  role        String    @default("user")
-  status      String    @default("active")
+  email      String  @unique
+  password   String
+  first_name String?
+  last_name  String?
+  role       String  @default("user")
+  status     String  @default("active")
 
   @@map("users")
+}
+
+model Employee {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  first_name String
+  last_name  String
+  email      String? @unique
+  phone      String?
+  address    String?
+  role       String
+  status     String  @default("active")
+
+  bank_information BankInformation[]
+
+  @@map("employees")
+}
+
+model BankInformation {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  bank_name      String
+  bank_code      Int
+  bank_branch    Int
+  account_number String
+  account_name   String
+  status         String @default("active")
+
+  employee_id Int
+  employee    Employee @relation(fields: [employee_id], references: [id])
+
+  @@map("payment_info")
 }
