@@ -2,10 +2,11 @@ type ServiceResponseErrorType =
   | 'NOT_FOUND'
   | 'UNAUTHORIZED'
   | 'BAD_REQUEST'
-  | 'INTERNAL_SERVER_ERROR';
+  | 'INTERNAL_SERVER_ERROR'
+  | 'FORBIDDEN';
 
-type ServiceMessage = {
-  mesaage: string;
+export type ServiceMessage = {
+  message: string;
 };
 
 type ServiceResponseError = {
