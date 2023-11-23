@@ -12,11 +12,13 @@ datasource db {
 
 model Supplier {
   id               Int      @id @default(autoincrement())
-  supplier_name    String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  supplier_name    String
   supplier_address String?
   supplier_contact Int
+  supplier_product String
 
   @@map("suppliers")
 }
@@ -24,7 +26,7 @@ model Supplier {
 model Crop {
   id        Int       @id @default(autoincrement())
   crop_name String
-  Harvest   Harvest[]
+  harvests   Harvest[]
 
   @@map("crops")
 }
@@ -54,15 +56,23 @@ model Farm {
   farm_soil_type String
 
   harvests   Harvest[] @relation("Harvests")
+  activities Activity[]
+
   @@map("farms")
 }
 
 model Activity {
   id          Int       @id @default(autoincrement())
-  title       String
-  description String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
+
+  title       String
+  description String
   status      String    @default("active")
+
+  farm_id     Int
+  farm        Farm      @relation(fields: [farm_id], references: [id])
+
+  @@map("activities")
 }
