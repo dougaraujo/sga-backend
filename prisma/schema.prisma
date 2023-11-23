@@ -11,29 +11,42 @@ datasource db {
 }
 
 model Supplier {
-  id          Int      @id @default(autoincrement())
-  supplier_name        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  supplier_address     String?
-  supplier_contact     Int
+  id               Int      @id @default(autoincrement())
+  supplier_name    String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  supplier_address String?
+  supplier_contact Int
 
   @@map("suppliers")
 }
 
 model Crop {
-  id          Int      @id @default(autoincrement())
-  crop_name   String
+  id        Int       @id @default(autoincrement())
+  crop_name String
+  Harvest   Harvest[]
 
   @@map("crops")
 }
 
+model Harvest {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  harvest_name String
+  crop_id      Int
+  crop         Crop   @relation(fields: [crop_id], references: [id])
+
+  @@map("harvests")
+}
+
 model Activity {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
-  status      String   @default("active")
+  status      String    @default("active")
 }
