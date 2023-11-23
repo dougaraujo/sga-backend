@@ -57,6 +57,7 @@ model Farm {
 
   harvests   Harvest[] @relation("Harvests")
   activities Activity[]
+  occurrences Occurrence[] 
 
   @@map("farms")
 }
@@ -75,4 +76,21 @@ model Activity {
   farm        Farm      @relation(fields: [farm_id], references: [id])
 
   @@map("activities")
+}
+
+model Occurrence {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  title       String
+  description String
+  status      String    @default("active")
+  impact      String
+
+  farm_id     Int
+  farm       Farm      @relation(fields: [farm_id], references: [id])
+
+  @@map("occurrences")
 }
