@@ -17,6 +17,15 @@ model Supplier {
   updatedAt   DateTime @updatedAt
   supplier_address     String?
   supplier_contact     Int
+
+  @@map("suppliers")
+}
+
+model Crop {
+  id          Int      @id @default(autoincrement())
+  crop_name   String
+
+  @@map("crops")
 }
 
 model Activity {
