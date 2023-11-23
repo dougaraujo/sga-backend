@@ -37,8 +37,24 @@ model Harvest {
   harvest_name String
   crop_id      Int
   crop         Crop   @relation(fields: [crop_id], references: [id])
+  farm_id      Int
+  farms        Farm[]   @relation("Harvests")
 
   @@map("harvests")
+}
+
+model Farm {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  farm_name  String
+  farm_area  Float
+  farm_location String
+  farm_soil_type String
+
+  harvests   Harvest[] @relation("Harvests")
+  @@map("farms")
 }
 
 model Activity {
