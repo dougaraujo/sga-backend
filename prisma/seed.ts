@@ -12,8 +12,8 @@ async function main() {
     create: {
       email: 'user@user.com',
       password: userHash,
-      first_name: 'User',
-      last_name: 'Seed',
+      firstName: 'User',
+      lastName: 'Seed',
     },
   });
 
@@ -23,8 +23,8 @@ async function main() {
     create: {
       email: 'admin@admin.com',
       password: adminHash,
-      first_name: 'Admin',
-      last_name: 'Seed',
+      firstName: 'Admin',
+      lastName: 'Seed',
       role: 'admin',
     },
   });

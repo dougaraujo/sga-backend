@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import ServiceResponse, { ServiceMessage } from 'src/types/ServiceResponse';
 import { User } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import * as argon from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -14,8 +15,13 @@ export class UserService {
     createUserDto: CreateUserDto,
   ): Promise<ServiceResponse<User | ServiceMessage>> {
     try {
+      const userHash = await argon.hash(createUserDto.password);
+      const userWithHash = {
+        ...createUserDto,
+        password: userHash,
+      };
       const createdUser = await this.prismaService.user.create({
-        data: createUserDto,
+        data: userWithHash,
       });
 
       delete createdUser.password;
@@ -41,6 +47,10 @@ export class UserService {
   async findAll(): Promise<ServiceResponse<User[]>> {
     const users = await this.prismaService.user.findMany();
 
+    for (const user in users) {
+      delete users[user].password;
+    }
+
     return {
       status: 'SUCCESS',
       data: users,
@@ -60,6 +70,8 @@ export class UserService {
         },
       };
     }
+
+    delete user.password;
 
     return {
       status: 'SUCCESS',

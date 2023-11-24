@@ -15,17 +15,17 @@ model Supplier {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  supplier_name    String
-  supplier_address String?
-  supplier_contact Int
-  supplier_product String
+  supplierName    String @map("supplier_name")
+  supplierAddress String? @map("supplier_address")
+  supplierContact Int @map("supplier_contact")
+  supplierProduct String @map("supplier_product")
 
   @@map("suppliers")
 }
 
 model Crop {
   id        Int       @id @default(autoincrement())
-  crop_name String
+  cropName  String    @map("crop_name")
   harvests  Harvest[]
 
   @@map("crops")
@@ -36,10 +36,10 @@ model Harvest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  harvest_name String
-  crop_id      Int
-  crop         Crop   @relation(fields: [crop_id], references: [id])
-  farm_id      Int
+  harvestName String @map("harvest_name")
+  cropId      Int   @map("crop_id")
+  crop         Crop   @relation(fields: [cropId], references: [id])
+  farmId      Int @map("farm_id")
   farms        Farm[] @relation("Harvests")
 
   @@map("harvests")
@@ -50,10 +50,10 @@ model Farm {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  farm_name      String
-  farm_area      Float
-  farm_location  String
-  farm_soil_type String
+  farmName      String @map("farm_name")
+  farmArea      Float @map("farm_area")
+  farmLocation  String @map("farm_location")
+  farmSoilType String @map("farm_soil_type")
 
   harvests    Harvest[]    @relation("Harvests")
   activities  Activity[]
@@ -72,8 +72,8 @@ model Activity {
   description String
   status      String @default("active")
 
-  farm_id Int
-  farm    Farm @relation(fields: [farm_id], references: [id])
+  farmId Int @map("farm_id")
+  farm    Farm @relation(fields: [farmId], references: [id])
 
   @@map("activities")
 }
@@ -89,8 +89,8 @@ model Occurrence {
   status      String @default("active")
   impact      String
 
-  farm_id Int
-  farm    Farm @relation(fields: [farm_id], references: [id])
+  farmId Int @map("farm_id")
+  farm    Farm @relation(fields: [farmId], references: [id])
 
   @@map("occurrences")
 }
@@ -103,8 +103,8 @@ model User {
 
   email      String  @unique
   password   String
-  first_name String?
-  last_name  String?
+  firstName  String? @map("first_name")
+  lastName   String? @map("last_name")
   role       String  @default("user")
   status     String  @default("active")
 
@@ -117,15 +117,15 @@ model Employee {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  first_name String
-  last_name  String
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
   email      String? @unique
   phone      String?
   address    String?
   role       String
   status     String  @default("active")
 
-  bank_information BankInformation[]
+  bankInformation BankInformation[]
 
   @@map("employees")
 }
@@ -136,15 +136,15 @@ model BankInformation {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  bank_name      String
-  bank_code      Int
-  bank_branch    Int
-  account_number String
-  account_name   String
+  bankName      String @map("bank_name")
+  bankCode      Int   @map("bank_code")
+  bankBranch    Int  @map("bank_branch")
+  accountNumber String @map("account_number")
+  accountName   String @map("account_name")
   status         String @default("active")
 
-  employee_id Int
-  employee    Employee @relation(fields: [employee_id], references: [id])
+  employeeId Int @map("employee_id")
+  employee    Employee @relation(fields: [employeeId], references: [id])
 
   @@map("payment_info")
 }
