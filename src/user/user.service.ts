@@ -9,26 +9,26 @@ import * as argon from 'argon2';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: PrismaService = new PrismaService()) {}
+  constructor(private prismaService: PrismaService) {}
 
   async create(
     createUserDto: CreateUserDto,
-  ): Promise<ServiceResponse<User | ServiceMessage>> {
+  ): Promise<ServiceResponse<ServiceMessage>> {
     try {
       const userHash = await argon.hash(createUserDto.password);
       const userWithHash = {
         ...createUserDto,
         password: userHash,
       };
-      const createdUser = await this.prismaService.user.create({
+      await this.prismaService.user.create({
         data: userWithHash,
       });
 
-      delete createdUser.password;
-
       return {
         status: 'CREATED',
-        data: createdUser,
+        data: {
+          message: 'User created successfully',
+        },
       };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {

@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -9,19 +8,13 @@ import {
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { UpdateUserDto } from './dto';
 import mapStatusHTTP from 'src/helpers/mapStatusHTTP';
 import { Response } from 'express';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Post('register')
-  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
-    const { status, data } = await this.userService.create(createUserDto);
-    return res.status(mapStatusHTTP(status)).json(data);
-  }
 
   @Get()
   async findAll(@Res() res: Response) {
