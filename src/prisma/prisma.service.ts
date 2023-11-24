@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-  constructor(private configService: ConfigService) {
+  constructor(private configService: ConfigService = new ConfigService()) {
     super({
       datasources: {
         db: {
